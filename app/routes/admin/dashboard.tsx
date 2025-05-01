@@ -1,12 +1,19 @@
 import { StatsCard, TripCard } from "components";
 import Header from "components/Header";
 import React from "react";
+import { getUser } from "~/appwrite/auth";
 import { allTrips, dashboardStats, user, users } from "~/constants";
 import { formatDate } from "~/lib/utils";
+import type { Route } from "./+types/dashboard"; 
 
-const dashboard = () => {
-    const { totalUsers, usersJoined, totalTrips, tripsCreated, userRole } =
-        dashboardStats;
+const { totalUsers, usersJoined, totalTrips, tripsCreated, userRole } =
+    dashboardStats;
+
+export const clientLoader = async() => await getUser();
+
+
+const Dashboard = ({loaderData} : Route.ComponentProps) => {
+    const user = loaderData as User | null;
     return (
         <main className="dashboard wrapper">
             <Header
@@ -52,4 +59,4 @@ const dashboard = () => {
     );
 };
 
-export default dashboard;
+export default Dashboard;
