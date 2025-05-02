@@ -16,7 +16,7 @@ export default defineConfig((config) => {
     return {
         plugins: [
             reactRouter(),
-            sentryReactRouter(sentryConfig, config),
+            // sentryReactRouter(sentryConfig, config),
             tailwindcss(),
             tsconfigPaths(),
         ],
