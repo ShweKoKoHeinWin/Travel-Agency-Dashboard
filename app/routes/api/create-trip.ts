@@ -72,9 +72,82 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         // const textResult = await genAI
         //     .getGenerativeModel({ model: "gemini-2.0-flash" })
         //     .generateContent([prompt]);
-            
+
         // const trip = parseMarkdownToJson(textResult.response.text());
-        const trip = `A ${numberOfDays}-day trip to ${country} exploring the best of ${travelStyle}. Whether you're interested in ${interests}, traveling with ${groupType}, or sticking to a ${budget} budget, this itinerary covers top destinations, local experiences, and hidden gems. Get ready for an unforgettable adventure!`;
+        const trip = {
+            name: `Enchanting Escape to ${country}`,
+            description:
+                `Experience a delightful ${numberOfDays}-day journey through ${country}'s cultural gems, from vibrant cityscapes to serene nature retreats.`,
+            estimatedPrice: "$1500",
+            duration: numberOfDays,
+            budget: budget,
+            travelStyle: travelStyle,
+            country: country,
+            interests: interests,
+            groupType: groupType,
+            bestTimeToVisit: [
+                "🌸 Spring (March to May): Cherry blossoms in full bloom",
+                "☀️ Summer (June to August): Festivals and outdoor adventures",
+                "🍁 Autumn (September to November): Stunning fall foliage",
+                "❄️ Winter (December to February): Snowy landscapes and hot springs",
+            ],
+            weatherInfo: [
+                "☀️ Summer: 25-35°C (77-95°F)",
+                "🌦️ Spring: 10-20°C (50-68°F)",
+                "🌧️ Autumn: 15-25°C (59-77°F)",
+                "❄️ Winter: -5-10°C (23-50°F)",
+            ],
+            location: {
+                city: country,
+                coordinates: [35.682839, 139.759455],
+                openStreetMap:
+                    "https://www.openstreetmap.org/#map=10/35.6828/139.7595",
+            },
+            itinerary: [
+                {
+                    day: 1,
+                    location: country,
+                    activities: [
+                        {
+                            time: "Morning",
+                            description:
+                                "🏯 Visit the Imperial Palace and stroll through its gardens",
+                        },
+                        {
+                            time: "Afternoon",
+                            description:
+                                "🛍️ Explore Akihabara, the hub for electronics and anime culture",
+                        },
+                        {
+                            time: "Evening",
+                            description:
+                                "🍣 Enjoy an authentic sushi dinner at a traditional restaurant",
+                        },
+                    ],
+                },
+                {
+                    day: 2,
+                    location: country,
+                    activities: [
+                        {
+                            time: "Morning",
+                            description:
+                                "🌿 Walk through the famous bamboo forest of Arashiyama",
+                        },
+                        {
+                            time: "Afternoon",
+                            description:
+                                "⛩️ Visit Fushimi Inari Shrine and hike through its thousands of torii gates",
+                        },
+                        {
+                            time: "Evening",
+                            description:
+                                "🍵 Experience a traditional Japanese tea ceremony",
+                        },
+                    ],
+                },
+            ],
+        };
         const imageResponse = await fetch(
             `https://api.unsplash.com/search/photos?query=${country} ${interests} ${travelStyle}&client_id=${unsplashApiKey}`
         );
@@ -89,10 +162,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
                 tripDetail: JSON.stringify(trip),
                 createdAt: new Date().toISOString(),
                 imageUrls,
-                userId
+                userId,
             }
         );
-        return data({id: result.$id});
+        return data({ id: result.$id });
     } catch (e) {
         console.error("Error", e);
     }

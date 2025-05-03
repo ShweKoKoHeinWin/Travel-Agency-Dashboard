@@ -42,7 +42,7 @@ const TripCard = ({
             <div className="mt-5 pl-[18px] pr-3.5 pb-5">
                 <ChipListComponent id="travel-chip">
                     <ChipsDirective>
-                        {tags.map(( tag, i ) => (
+                        {tags?.map(( tag, i ) => (
                             <ChipDirective
                                 key={i}
                                 text={getFirstWord(tag)}
