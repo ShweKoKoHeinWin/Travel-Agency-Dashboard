@@ -8,7 +8,7 @@ import { parseTripData } from "~/lib/utils";
 import type { Route } from "./+types/all-trips";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const limit = 1;
+    const limit = 5;
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get("page") || "1", 10);
     const offset = (page - 1) * limit;
@@ -71,7 +71,7 @@ const AllTrips = ({ loaderData }: Route.ComponentProps) => {
 
                 <PagerComponent
                     totalRecordsCount={total}
-                    pageSize={1}
+                    pageSize={5}
                     currentPage={currentPage}
                     click={(args) => handlePageChange(args.currentPage)}
                     cssClass="!mb-4"

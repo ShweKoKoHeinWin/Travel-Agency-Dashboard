@@ -10,23 +10,33 @@ import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { account } from "~/appwrite/client";
 import { useNavigate } from "react-router";
 
-export const loader = async() => {
-    const response = await fetch('https://restcountries.com/v3.1/all');
-    const data = await response.json();
-    
-    return data.map((country: any) => ({
-        name: country.flag + country.name.common,
-        coordinates: country.latlng,
-        value: country.name.common,
-        openStreetMap: country.maps?.openStreetMap,
-    }));
+
+export const loader = async () => {
+    try {
+        const response = await fetch(`https://restcountries.com/v3.1/all?fields=name,latlng,flag,maps`);
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error("Unexpected response format");
+        }
+
+        return data.map((country: any) => ({
+            name: country.flag + country.name.common,
+            coordinates: country.latlng,
+            value: country.name.common,
+            openStreetMap: country.maps?.openStreetMap,
+        }));
+    } catch (error) {
+        console.error("Failed to load countries:", error);
+        return []; // Return empty array to prevent crash
+    }
 }
 
 const CreateTrip = ({loaderData}: Route.ComponentProps) => {
     const navigate = useNavigate();
     const countries = loaderData as Country[];
     const countryData = countries.map((country) => ({
-        text: country.name,
+        text: `${country.name}`,
         value: country.value
     }))
     const [formData, setFormData] = useState<TripFormData>({
